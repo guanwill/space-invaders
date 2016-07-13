@@ -5,3 +5,5 @@
 
 ##Tech Stack
 * Tried out Phaser.js
+* HTML5/CSS3
+* Javascript
