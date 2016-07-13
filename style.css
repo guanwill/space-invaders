@@ -1,0 +1,11 @@
+body {
+  padding: 0px;
+  margin: 0px;
+  background: white;
+}
+
+#game-area {
+  display: block;
+  /*width: 100%;*/
+  margin: 0 auto
+}
