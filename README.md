@@ -9,6 +9,8 @@
 * Tried out Phaser.js
 * HTML5/CSS3
 * Javascript
+* Node JS
+* Express JS
 
 ##Heroku
 https://arcane-river-66749.herokuapp.com/
