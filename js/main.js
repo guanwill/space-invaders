@@ -12,7 +12,9 @@ var starfield;
 var enemyBullet;
 var firingTimer = 0;
 var livingEnemies = [];
+var livingBoss = [];
 var boss;
+var bossBullet;
 
 var stateText;
 var score = 0;
@@ -34,6 +36,7 @@ var GameState = {
     game.load.image('wormhole', 'assets/images/wormhole.gif');
     game.load.image('hpbar', 'assets/images/enemyship.gif');
     game.load.image('boss', 'assets/images/boss2.png');
+    game.load.image('bossBullet', 'assets/images/bossBullet.png');
   },
 
   // ------ CREATING GAME STATES -----
@@ -48,7 +51,7 @@ var GameState = {
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
     // bullets.createMultiple(30, 'bullet'); //FIND THE BULLET IMAGE
-    bullets.createMultiple(30, 'bluebullet'); //FIND THE BULLET IMAGE
+    bullets.createMultiple(90, 'bluebullet'); //FIND THE BULLET IMAGE
     bullets.setAll('anchor.x', 0.5);
     bullets.setAll('anchor.y', 1);
     bullets.setAll('outOfBoundsKill', true);
@@ -58,7 +61,7 @@ var GameState = {
     bullets2 = game.add.group();
     bullets2.enableBody = true;
     bullets2.physicsBodyType = Phaser.Physics.ARCADE;
-    bullets2.createMultiple(30, 'bullet'); //FIND THE BULLET IMAGE
+    bullets2.createMultiple(90, 'bullet'); //FIND THE BULLET IMAGE
     bullets2.setAll('anchor.x', 0.5);
     bullets2.setAll('anchor.y', 1);
     bullets2.setAll('outOfBoundsKill', true);
@@ -67,11 +70,21 @@ var GameState = {
     enemyBullets = game.add.group();
     enemyBullets.enableBody = true;
     enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
-    enemyBullets.createMultiple(30, 'enemyBullet'); //FIND THE ENEMY BULLET IMAGE
+    enemyBullets.createMultiple(90, 'enemyBullet'); //FIND THE ENEMY BULLET IMAGE
     enemyBullets.setAll('anchor.x', 0.5);
     enemyBullets.setAll('anchor.y', 1);
     enemyBullets.setAll('outOfBoundsKill', true);
     enemyBullets.setAll('checkWorldBounds', true);
+
+    //create boss bullet
+    bossBullets = game.add.group();
+    bossBullets.enableBody = true;
+    bossBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    bossBullets.createMultiple(90, 'bossBullet'); //FIND THE BULLET IMAGE
+    bossBullets.setAll('anchor.x', 0.5);
+    bossBullets.setAll('anchor.y', 1);
+    bossBullets.setAll('outOfBoundsKill', true);
+    bossBullets.setAll('checkWorldBounds', true);
 
     // creating player
     player = game.add.sprite(800, 800, 'player');
@@ -79,34 +92,6 @@ var GameState = {
     player.scale.setTo(1,-1); //flipping the image 180 degs vertically. -2 will flip it and change its dimension to double on the x axis
     game.physics.enable(player, Phaser.Physics.ARCADE);
     player.body.collideWorldBounds = true;
-
-
-    // creating boss
-    boss = game.add.group();
-    boss.enableBody = true;
-    boss.physicsBodyType = Phaser.Physics.ARCADE;
-    // createBoss();
-
-    function createBoss() {
-        var boss = boss.create(x * 88, y * 25, 'boss'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
-        boss.anchor.setTo(0.5, 0.5); //set anchor
-        boss.animations.add('fly', [], true); //set animation on ememyships
-        boss.play('fly'); //play animation
-        boss.body.moves = false;
-
-    //setting position of enemy ships on the screen
-    boss.x = 40; //starting position of enemies
-    boss.y = 40; //starting position of enemies
-    var tween = game.add.tween(boss).to( { x: 250 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true); //makes the enemyships move together as a group. 2000 is the speed of left-right movement. {x:500} is how wide the left-right movement is
-
-    //  When the tween loops it calls descend
-    tween.onLoop.add(descend, this);
-    }
-    function descend() {
-    boss.y += 10;
-    }
-
-
 
     // creating enemies
     aliens = game.add.group();  //we are defining multiple ships as one group
@@ -116,8 +101,8 @@ var GameState = {
 
     function createAliens () {
     for (var y = 0; y < 7; y++){ //how many rows of enemies
-          for (var x = 0; x < 1; x++){ //how many enemies per row
-              var alien = aliens.create(x * 88, y * 25, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
+          for (var x = 0; x < 8; x++){ //how many enemies per row
+              var alien = aliens.create(x * 98, y * 35, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
               alien.anchor.setTo(0.5, 0.5); //set anchor
               alien.scale.setTo(0.5,-0.5); //reverse image vertically
               alien.animations.add('fly', [], true); //set animation on ememyships
@@ -126,9 +111,9 @@ var GameState = {
           }
       }
     //setting position of enemy ships on the screen
-    aliens.x = 40; //starting position of enemies
+    aliens.x = 230; //starting position of enemies
     aliens.y = 40; //starting position of enemies
-    var tween = game.add.tween(aliens).to( { x: 250 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true); //makes the enemyships move together as a group. 2000 is the speed of left-right movement. {x:500} is how wide the left-right movement is
+    var tween = game.add.tween(aliens).to( { x: 450 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true); //makes the enemyships move together as a group. 2000 is the speed of left-right movement. {x:500} is how wide the left-right movement is
 
     //  When the tween loops it calls descend
     tween.onLoop.add(descend, this);
@@ -166,7 +151,7 @@ var GameState = {
     stateText.anchor.setTo(0.5, 0.5);
     stateText.visible = false;
 
-    for (var i = 0; i < 6; i++){
+    for (var i = 0; i < 6; i++){  //set number of lives
         var hpbar = lives.create(game.world.width - 350 + (50 * i), 120, 'hpbar');
         hpbar.anchor.setTo(0.5, 0.5);
         hpbar.scale.setTo(0.5, 0.5);
@@ -206,6 +191,32 @@ var GameState = {
         }
         if (game.time.now > firingTimer){
             enemyFires();
+            bossFires();
+
+        }
+
+
+
+
+        // configuring boss bullets
+        function bossFires () {
+          bossBullet = bossBullets.getFirstExists(false); //  Grab the first bullet we can from the pool
+          // bossBullet.reset(570, 400); // and fire the bullet from boss
+          bossBullet.reset(50, 50); // for meteoring purposes
+          game.physics.arcade.moveToObject(bossBullet,player,320); //how fast the bullet flies and who to aim the bullet at
+          firingTimer = game.time.now + 800; //how frequent the bullet fires. the lower the more frequent
+          // livingBoss.length=0;
+          // boss.forEachAlive(function(boss){
+          //     livingBoss.push(boss); //put every living enemy in an array defined at the very top
+          // });
+          //
+          // if (bossBullet > 0){
+          //     var random = game.rnd.integerInRange(0,livingEnemies.length-1);
+          //     var bossshooter=livingBoss[random]; // randomly select one of the enemyships
+          //     bossBullet.reset(bossshooter.body.x, bosssshooter.body.y); // and fire the bullet from this enemy
+          //     game.physics.arcade.moveToObject(bossBullet,player,520); //how fast the bullet flies and who to aim the bullet at
+          //     firingTimer = game.time.now + 500; //how frequent the bullet fires. the lower the more frequent
+          // }
         }
 
         function enemyFires () {
@@ -252,7 +263,153 @@ var GameState = {
         game.physics.arcade.overlap(bullets, aliens, collisionHandler, null, this); //define collisionHandler below
         game.physics.arcade.overlap(enemyBullets, player, enemyHitsPlayer, null, this); //define enemyhitsplayer below
         game.physics.arcade.overlap(bullets2, aliens, collisionHandler, null, this); //define collisionHandler below
+
+        // run collision for boss
+        // game.physics.arcade.overlap(bullets, boss, collisionHandler2, null, this); //define collisionHandler below
+        game.physics.arcade.overlap(bossBullets, player, bossHitsPlayer, null, this); //define enemyhitsplayer below
+        // game.physics.arcade.overlap(bullets2, boss, collisionHandler2, null, this); //define collisionHandler below
      }
+
+        // function collisionHandler2 (bullet, boss) {
+        //   bullet.kill();
+        //   boss.kill();
+        //   var explosion = explosions.getFirstExists(false);
+        //   explosion.reset(boss.body.x, boss.body.y);
+        //   explosion.play('kaboom', 30, false, true);
+        //
+        //   if (boss === 0){
+        //       score += 1000;
+        //       enemyBullets.callAll('kill',this);
+        //       stateText.text = " You won! Click to Restart";
+        //       stateText.visible = true;  //show above text
+        //       game.input.onTap.addOnce(restart, this); // the "click to restart" handler
+        //       console.log('restarting');
+        //   }
+        // }
+
+        function bossHitsPlayer (player,bullet) {
+          bullet.kill();
+          live = lives.getFirstAlive();
+
+          if (live){
+            live.kill();
+          }
+
+          //  create an explosion
+          var explosion = explosions.getFirstExists(false);
+          explosion.reset(player.body.x, player.body.y);
+          explosion.play('kaboom', 30, false, true);
+
+          // When the player dies
+          if (lives.countLiving() < 1){
+              player.kill();
+              bossBullets.callAll('kill');
+              enemyBullets.callAll('kill');
+              stateText.text=" GAME OVER \n Click to restart";
+              stateText.visible = true;
+              game.input.onTap.addOnce(restart,this); //the "click to restart" handler
+          }
+
+          //  A new level starts
+          function restart () {
+              lives.callAll('revive'); //resets the life count
+              aliens.removeAll();
+              createAliens(); // And brings the aliens back from the dead
+              player.revive(); //revives the player
+              stateText.visible = false; //hides the text
+              scoreString = 'Score : ';
+              score = 0;
+          }
+
+          function createAliens () {
+          for (var y = 0; y < 7; y++){ //how many rows of enemies
+                for (var x = 0; x < 8; x++){ //how many enemies per row
+                    var alien = aliens.create(x * 98, y * 35, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
+                    alien.anchor.setTo(0.5, 0.5); //set anchor
+                    alien.scale.setTo(0.5,-0.5); //reverse image vertically
+                    alien.animations.add('fly', [], true); //set animation on ememyships
+                    alien.play('fly'); //play animation
+                    alien.body.moves = false;
+                }
+            }
+          //setting position of enemy ships on the screen
+          aliens.x = 230; //starting position of enemies
+          aliens.y = 40; //starting position of enemies
+          var tween = game.add.tween(aliens).to( { x: 450 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true); //makes the enemyships move together as a group. 2000 is the speed of left-right movement. {x:500} is how wide the left-right movement is
+
+          //  When the tween loops it calls descend
+          tween.onLoop.add(descend, this);
+          }
+          function descend() {
+          aliens.y += 10;
+          }
+        }
+
+        // -----GENERATE A BOSS WHEN YOU KILL ALL MINIONS-----
+
+        // function collisionHandler (bullet, alien) {
+        //   // When a bullet hits an alien we kill them both
+        //   bullet.kill();
+        //   alien.kill();
+        //
+        //   //  Increase the score
+        //   score += 20;
+        //   scoreText.text = scoreString + score;
+        //
+        //   //  Create an explosion
+        //   var explosion = explosions.getFirstExists(false);
+        //   explosion.reset(alien.body.x, alien.body.y);
+        //   explosion.play('kaboom', 30, false, true);
+        //
+        //   if (aliens.countLiving() === 0){
+        //       score += 1000;
+        //       enemyBullets.callAll('kill',this);
+        //       // stateText.text = " Click to start boss";
+        //       stateText.visible = true;  //show above text
+        //       // game.input.onTap.addOnce(startBoss, this); // the "click to restart" handler
+        //       console.log('boss is ready');
+        //       setTimeout(startBoss, 200);
+        //   }
+        //
+        //   // CREATE BOSS WHE ALL MINIONS ARE DEFEATED
+        //   function startBoss() {
+        //       console.log('boss is ready2');
+        //       lives.callAll('revive'); //resets the life count
+        //       createBoss(); // shows boss
+        //
+        //       if (player.alive){
+        //           bossFires();
+        //           console.log(fired);
+        //       }
+        //
+        //       stateText.visible = false; //hide start boss text
+        //   }
+        //
+        //   var boss;
+        //   function createBoss () {
+        //       console.log('boss is created');
+        //       boss = game.add.group();
+        //       boss.enableBody = true;
+        //       boss.physicsBodyType = Phaser.Physics.ARCADE;
+        //       var boss = boss.create('0', '0', 'boss'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
+        //       boss.anchor.setTo(0.5, 0.5); //set anchor
+        //       boss.animations.add('fly', [], true); //set animation on ememyships
+        //       boss.play('fly'); //play animation
+        //       boss.body.moves = false;
+        //       stateText.visible = false;
+        //
+        //       //setting position of enemy ships on the screen
+        //       boss.x = 560; //starting position of enemies
+        //       boss.y = 170; //starting position of enemies
+        //       var tween = game.add.tween(boss).to( { x: 600 }, 1000, Phaser.Easing.Linear.None, true, 0, 1000, true); //makes the enemyships move together as a group. 2000 is the speed of left-right movement. {x:500} is how wide the left-right movement is
+        //
+        //   }
+        //   function descend() {
+        //       boss.y += 10;
+        //   }
+        //
+        // }
+
 
         function collisionHandler (bullet, alien) {
           // When a bullet hits an alien we kill them both
@@ -270,38 +427,46 @@ var GameState = {
 
           if (aliens.countLiving() === 0){
               score += 1000;
-              enemyBullets.callAll('kill',this);
-              stateText.text = " Click to start boss";
+              bossBullets.callAll('kill');
+              enemyBullets.callAll('kill');
+              player.kill();
+              stateText.text = "YOU WON!\n Click to restart";
               stateText.visible = true;  //show above text
-              game.input.onTap.addOnce(startBoss,this); // the "click to restart" handler
+              game.input.onTap.addOnce(restart, this); // the "click to restart" handler
           }
 
-          function startBoss() {
+          // -----INSTEAD OF GENERATING BOSS, RESTART GAME AFTER KILLING ALL MINIONS-----
+          function restart () {
               lives.callAll('revive'); //resets the life count
-              createBoss(); // shows boss
-              stateText.visible = false; //hide start boss text
+              aliens.removeAll();
+              createAliens(); // And brings the aliens back from the dead
+              player.revive(); //revives the player
+              stateText.visible = false; //hides the text
+              scoreString = 'Score : ';
+              score = 0;
           }
 
-          function createBoss () {
-              boss = game.add.group();
-              boss.enableBody = true;
-              boss.physicsBodyType = Phaser.Physics.ARCADE;
-              var boss = boss.create('0', '0', 'boss'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
-              boss.anchor.setTo(0.5, 0.5); //set anchor
-              boss.animations.add('fly', [], true); //set animation on ememyships
-              boss.play('fly'); //play animation
-              boss.body.moves = false;
-
+          function createAliens () {
+          for (var y = 0; y < 7; y++){ //how many rows of enemies
+                for (var x = 0; x < 8; x++){ //how many enemies per row
+                    var alien = aliens.create(x * 98, y * 35, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
+                    alien.anchor.setTo(0.5, 0.5); //set anchor
+                    alien.scale.setTo(0.5,-0.5); //reverse image vertically
+                    alien.animations.add('fly', [], true); //set animation on ememyships
+                    alien.play('fly'); //play animation
+                    alien.body.moves = false;
+                }
+            }
           //setting position of enemy ships on the screen
-          boss.x = 840; //starting position of enemies
-          boss.y = 170; //starting position of enemies
-          var tween = game.add.tween(boss).to( { x: 550 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true); //makes the enemyships move together as a group. 2000 is the speed of left-right movement. {x:500} is how wide the left-right movement is
+          aliens.x = 230; //starting position of enemies
+          aliens.y = 40; //starting position of enemies
+          var tween = game.add.tween(aliens).to( { x: 450 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true); //makes the enemyships move together as a group. 2000 is the speed of left-right movement. {x:500} is how wide the left-right movement is
 
           //  When the tween loops it calls descend
           tween.onLoop.add(descend, this);
           }
           function descend() {
-          boss.y += 10;
+              boss.y += 10;
           }
 
         }
@@ -341,8 +506,8 @@ var GameState = {
 
           function createAliens () {
           for (var y = 0; y < 7; y++){ //how many rows of enemies
-                for (var x = 0; x < 15; x++){ //how many enemies per row
-                    var alien = aliens.create(x * 88, y * 25, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
+                for (var x = 0; x < 8; x++){ //how many enemies per row
+                    var alien = aliens.create(x * 98, y * 35, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
                     alien.anchor.setTo(0.5, 0.5); //set anchor
                     alien.scale.setTo(0.5,-0.5); //reverse image vertically
                     alien.animations.add('fly', [], true); //set animation on ememyships
@@ -351,9 +516,9 @@ var GameState = {
                 }
             }
           //setting position of enemy ships on the screen
-          aliens.x = 40; //starting position of enemies
+          aliens.x = 230; //starting position of enemies
           aliens.y = 40; //starting position of enemies
-          var tween = game.add.tween(aliens).to( { x: 250 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true); //makes the enemyships move together as a group. 2000 is the speed of left-right movement. {x:500} is how wide the left-right movement is
+          var tween = game.add.tween(aliens).to( { x: 450 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true); //makes the enemyships move together as a group. 2000 is the speed of left-right movement. {x:500} is how wide the left-right movement is
 
           //  When the tween loops it calls descend
           tween.onLoop.add(descend, this);
@@ -361,6 +526,7 @@ var GameState = {
           function descend() {
           aliens.y += 10;
           }
+
 
 
           //---------SECOND BULLET CREATION AND COLLISION EFFECTS---------
@@ -372,7 +538,6 @@ var GameState = {
             //  Increase the score
             // score += 20;
             // scoreText.text = scoreString + score;
-
             //  Create an explosion
             var explosion = explosions.getFirstExists(false);
             explosion.reset(alien.body.x, alien.body.y);
@@ -384,7 +549,6 @@ var GameState = {
                 enemyBullets.callAll('kill',this);
                 // stateText.text = " You Won, \n Click to restart";
                 // stateText.visible = true;
-
                 //the "click to restart" handler
                 // game.input.onTap.addOnce(restart,this);
             }
@@ -392,11 +556,9 @@ var GameState = {
           function enemyHitsPlayer (player,bullets2) {
             bullets2.kill();
             // live = lives.getFirstAlive();
-
             // if (live){
               // live.kill();
             // }
-
             //  create an explosion
             var explosion = explosions.getFirstExists(false);
             explosion.reset(player.body.x, player.body.y);
@@ -415,10 +577,55 @@ var GameState = {
             // }
           }
 
+          //---------METEOR BULLET CREATION AND COLLISION EFFECTS---------
+
+          function collisionHandler (bullets2, alien) {
+            // When a bullet hits an alien we kill them both
+            bullets2.kill();
+            alien.kill();
+            //  Increase the score
+            // score += 20;
+            // scoreText.text = scoreString + score;
+            //  Create an explosion
+            var explosion = explosions.getFirstExists(false);
+            explosion.reset(alien.body.x, alien.body.y);
+            explosion.play('kaboom', 30, false, true);
+
+            if (aliens.countLiving() === 0){
+                // score += 1000;
+                // scoreText.text = scoreString + score;
+                enemyBullets.callAll('kill',this);
+                // stateText.text = " You Won, \n Click to restart";
+                // stateText.visible = true;
+                //the "click to restart" handler
+                // game.input.onTap.addOnce(restart,this);
+            }
+          }
+          function enemyHitsPlayer (player,bullets2) {
+            bullets2.kill();
+            // live = lives.getFirstAlive();
+            // if (live){
+              // live.kill();
+            // }
+            //  create an explosion
+            var explosion = explosions.getFirstExists(false);
+            explosion.reset(player.body.x, player.body.y);
+            explosion.play('kaboom', 30, false, true);
+
+            // When the player dies
+            // if (lives.countLiving() < 1){
+            //     player.kill();
+            //     enemyBullets.callAll('kill');
+            //
+            //     stateText.text=" GAME OVER \n Click to restart";
+            //     stateText.visible = true;
+            //
+            //     //the "click to restart" handler
+            //     game.input.onTap.addOnce(restart,this);
+            // }
+          }
 
         }
-
-
   }
 };
 
