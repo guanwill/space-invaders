@@ -1,0 +1,24 @@
+{
+  "name": "phaser-space-invaders",
+  "version": "1.0.0",
+  "description": "##Purpose * Shoot all the bad guys down with your awesome ship but make sure you avoid opponent's bullets/meteors too!",
+  "main": "app.js",
+  "scripts": {
+    "start": "app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guanwill/space-invaders.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guanwill/space-invaders/issues"
+  },
+  "homepage": "https://github.com/guanwill/space-invaders#readme",
+  "dependencies": {
+    "ejs": "^2.4.2",
+    "express": "^4.14.0"
+  }
+}
