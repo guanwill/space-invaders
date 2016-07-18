@@ -7,7 +7,7 @@
 * Compete for the highest score!
 
 ##Features
-* Player has a hidden weapon up its sleeve
+* Player has two hidden weapons packed away in its aircraft
 * For each winning round, difficulty increases where meteors and enemy bullets are fired faster
 * For each winning round, a randomly generated set of enemies will appear.
 * There are 8 different types of enemies to be seen. Can you find them all?
