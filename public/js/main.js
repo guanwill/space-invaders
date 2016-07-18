@@ -214,7 +214,7 @@ var GameState = {
               var shooter=livingEnemies[random]; // randomly select one of the enemyships
               enemyBullet.reset(shooter.body.x, shooter.body.y); // and fire the bullet from this enemy
               game.physics.arcade.moveToObject(enemyBullet,player,220); //how fast the bullet flies and who to aim the bullet at
-              firingTimer = game.time.now + 400; //how frequent the bullet fires. the lower the more frequent
+              firingTimer = game.time.now + 50; //how frequent the bullet fires. the lower the more frequent
           }
         }
 
@@ -326,20 +326,20 @@ var GameState = {
               meteors.callAll('kill');
               enemyBullets.callAll('kill');
               player.kill();
-              stateText.text = "YOU WON!\n Click to restart";
+              stateText.text = "YOU WON!\n Click to continue";
               stateText.visible = true;  //show above text
-              game.input.onTap.addOnce(restart, this); // the "click to restart" handler
+              game.input.onTap.addOnce(continuee, this); // the "click to restart" handler
           }
 
           // -----RESTART GAME AFTER KILLING ALL MINIONS-----
-          function restart () {
-              lives.callAll('revive'); //resets the life count
+          function continuee () {
+              // lives.callAll('revive'); //resets the life count
               aliens.removeAll();
               createAliens(); // And brings the aliens back from the dead
               player.revive(); //revives the player
               stateText.visible = false; //hides the text
-              scoreString = 'Score : ';
-              score = 0;
+              // scoreString = 'Score : ';
+              // score = 0;
           }
 
           function createAliens () {
