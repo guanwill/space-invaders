@@ -55,6 +55,7 @@ var GameState = {
     game.load.image('enemy6', 'assets/images/enemyship11.png');
     game.load.image('enemy7', 'assets/images/enemyship14.png');
     game.load.image('enemy8', 'assets/images/enemyship16.png');
+    game.load.image('missile', 'assets/images/missilebullet.gif');
   },
 
   // ------ CREATING GAME STATES -----
@@ -84,6 +85,16 @@ var GameState = {
     bullets2.setAll('anchor.y', 1);
     bullets2.setAll('outOfBoundsKill', true);
     bullets2.setAll('checkWorldBounds', true);
+
+    //add third bullet
+    missile = game.add.group();
+    missile.enableBody = true;
+    missile.physicsBodyType = Phaser.Physics.ARCADE;
+    missile.createMultiple(90, 'missile'); //FIND THE BULLET IMAGE
+    missile.setAll('anchor.x', 0.5);
+    missile.setAll('anchor.y', 1);
+    missile.setAll('outOfBoundsKill', true);
+    missile.setAll('checkWorldBounds', true);
 
     enemyBullets = game.add.group();
     enemyBullets.enableBody = true;
@@ -118,7 +129,7 @@ var GameState = {
     createAliens();
 
     function createAliens () {
-    for (var y = 0; y < 6; y++){ //how many rows of enemies
+    for (var y = 0; y < 5; y++){ //how many rows of enemies
           for (var x = 0; x < 9; x++){ //how many enemies per row
               // var alien = aliens.create(x * 98, y * 45, enemyships[randomNumber]); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
               var alien = aliens.create(x * 98, y * 45, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
@@ -156,6 +167,8 @@ var GameState = {
     cursors = game.input.keyboard.createCursorKeys();
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR); //make spacebar the fire bullet button
     firebluebullet = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+    firemissile = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+
 
     //  The score
     scoreString = 'Score : ';
@@ -207,6 +220,9 @@ var GameState = {
         }
         if (firebluebullet.isDown){
             fireBullet2();
+        }
+        if (firemissile.isDown){
+            firemissiles();
         }
         if (game.time.now > firingTimer){
             enemyFires();
@@ -261,10 +277,23 @@ var GameState = {
             }
         }
 
+        function firemissiles() {
+            if (game.time.now > bulletTime){ // To avoid them being allowed to fire too fast we set a time limit
+                bullet = missile.getFirstExists(false); // Grab the first bullet we can from the
+
+                if (bullet){
+                  bullet.reset(player.x, player.y + -43); //and fire it.
+                  bullet.body.velocity.y = -400;
+                  bulletTime = game.time.now + 100; //how fast the bullet fires
+                }
+            }
+        }
+
         // Run collision
         game.physics.arcade.overlap(bullets, aliens, collisionHandler, null, this); //define collisionHandler below
         game.physics.arcade.overlap(enemyBullets, player, enemyHitsPlayer, null, this); //define enemyhitsplayer below
         game.physics.arcade.overlap(bullets2, aliens, collisionHandler, null, this); //define collisionHandler below
+        game.physics.arcade.overlap(missile, aliens, collisionHandler, null, this); //define collisionHandler below
         game.physics.arcade.overlap(meteors, player, meteorHitsPlayer, null, this); //define enemyhitsplayer below
      }
 
@@ -322,7 +351,7 @@ var GameState = {
           }
 
           function createAliens () {
-          for (var y = 0; y < 6; y++){ //how many rows of enemies
+          for (var y = 0; y < 5; y++){ //how many rows of enemies
                 for (var x = 0; x < 9; x++){ //how many enemies per row
                     var alien = aliens.create(x * 98, y * 45, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
                     alien.anchor.setTo(0.5, 0.5); //set anchor
@@ -384,7 +413,7 @@ var GameState = {
 
           function createAliens () {
           var randomNumber = Math.floor(Math.random()*enemyships.length);
-          for (var y = 0; y < 6; y++){ //how many rows of enemies
+          for (var y = 0; y < 5; y++){ //how many rows of enemies
                 for (var x = 0; x < 9; x++){ //how many enemies per row
                     var alien = aliens.create(x * 98, y * 45, enemyships[randomNumber]); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
                     alien.anchor.setTo(0.5, 0.5); //set anchor
@@ -461,7 +490,7 @@ var GameState = {
           }
 
           function createAliens () {
-          for (var y = 0; y < 6; y++){ //how many rows of enemies
+          for (var y = 0; y < 5; y++){ //how many rows of enemies
                 for (var x = 0; x < 9; x++){ //how many enemies per row
                     var alien = aliens.create(x * 98, y * 45, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
                     alien.anchor.setTo(0.5, 0.5); //set anchor
@@ -502,6 +531,31 @@ var GameState = {
           }
           function enemyHitsPlayer (player,bullets2) {
             bullets2.kill();
+
+            var explosion = explosions.getFirstExists(false);
+            explosion.reset(player.body.x, player.body.y);
+            explosion.play('kaboom', 30, false, true);
+          }
+
+          //---------MISSILE CREATION AND COLLISION EFFECTS---------
+
+          function collisionHandler (missile, alien) {
+            // When a bullet hits an alien we kill them both
+            missile.kill();
+            alien.kill();
+
+            //  Create an explosion
+            var explosion = explosions.getFirstExists(false);
+            explosion.reset(alien.body.x, alien.body.y);
+            explosion.play('kaboom', 30, false, true);
+
+            if (aliens.countLiving() === 0){
+                enemyBullets.callAll('kill',this);
+
+            }
+          }
+          function enemyHitsPlayer (player,missile) {
+            missile.kill();
 
             var explosion = explosions.getFirstExists(false);
             explosion.reset(player.body.x, player.body.y);
