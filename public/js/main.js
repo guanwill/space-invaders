@@ -1,5 +1,10 @@
+// var express = require('express'),
+// gamestat = require('./models/gamestat'),
+// mongoose = require('mongoose');
+
 // ----- CREATING NEW GAME INSTANCE -----
 var game = new Phaser.Game(1550, 860, Phaser.AUTO, 'game-area'); //set resolution. phaser.auto will choose to render on canvas or webGL depending on availability.
+console.log("hold key '1' for a better attack");
 
 var player;
 var aliens;
@@ -21,6 +26,8 @@ var score = 0;
 var scoreString = '';
 var scoreText;
 var lives;
+var name = prompt("Please Enter Your Name");
+
 
 // ------ PRELOADING ASSETS -----
 var GameState = {
@@ -270,7 +277,25 @@ var GameState = {
               stateText.text=" GAME OVER \n Click to restart";
               stateText.visible = true;
               game.input.onTap.addOnce(restart,this); //the "click to restart" handler
+              saveGameStats();
           }
+
+          function saveGameStats () {
+            $.ajax({
+              url: 'http://localhost:3000/api',
+              method: 'POST',
+              data: {
+                name: name,
+                score: score,
+              },
+              datatype: 'JSON',
+              success: function(data){  //if successful upon grabbing data
+                console.log(data);
+
+              }
+            })
+          }
+
 
           //  A new level starts
           function restart () {
