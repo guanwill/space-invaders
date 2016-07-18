@@ -27,6 +27,7 @@ var scoreString = '';
 var scoreText;
 var lives;
 var name = prompt("Please Enter Your Name");
+var enemyships = ['enemy2', 'enemy3', 'enemy4', 'enemy5', 'enemy6', 'enemy7', 'enemy8'];
 
 
 // ------ PRELOADING ASSETS -----
@@ -38,12 +39,19 @@ var GameState = {
     game.load.image('bullet', 'assets/images/blueball.png');
     game.load.image('bluebullet', 'assets/images/laser-multiple3.png');
     game.load.image('enemyBullet', 'assets/images/enemyball.gif');
-    game.load.image('enemy', 'assets/images/enemyship2.png');
-    game.load.image('player', 'assets/images/plane2.png');
+    game.load.image('player', 'assets/images/plane3.png');
     game.load.image('wormhole', 'assets/images/wormhole.gif');
     game.load.image('hpbar', 'assets/images/enemyship.gif');
     game.load.image('boss', 'assets/images/boss2.png');
     game.load.image('meteor', 'assets/images/bossBullet.png');
+    game.load.image('enemy', 'assets/images/enemyship2.png');
+    game.load.image('enemy2', 'assets/images/enemyship5.png');
+    game.load.image('enemy3', 'assets/images/enemyship8.png');
+    game.load.image('enemy4', 'assets/images/enemyship9.png');
+    game.load.image('enemy5', 'assets/images/enemyship10.png');
+    game.load.image('enemy6', 'assets/images/enemyship11.png');
+    game.load.image('enemy7', 'assets/images/enemyship14.png');
+    game.load.image('enemy8', 'assets/images/enemyship16.png');
   },
 
   // ------ CREATING GAME STATES -----
@@ -107,9 +115,10 @@ var GameState = {
     createAliens();
 
     function createAliens () {
-    for (var y = 0; y < 7; y++){ //how many rows of enemies
-          for (var x = 0; x < 8; x++){ //how many enemies per row
-              var alien = aliens.create(x * 98, y * 35, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
+    for (var y = 0; y < 6; y++){ //how many rows of enemies
+          for (var x = 0; x < 9; x++){ //how many enemies per row
+              // var alien = aliens.create(x * 98, y * 45, enemyships[randomNumber]); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
+              var alien = aliens.create(x * 98, y * 45, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
               alien.anchor.setTo(0.5, 0.5); //set anchor
               alien.scale.setTo(0.5,-0.5); //reverse image vertically
               alien.animations.add('fly', [], true); //set animation on ememyships
@@ -205,8 +214,8 @@ var GameState = {
         function meteorFires () {
           meteor = meteors.getFirstExists(false); //  Grab the first meteor we can from the pool
           meteor.reset(50, 50); // for meteoring purposes
-          game.physics.arcade.moveToObject(meteor,player,320); //how frequent the bullet flies and who to aim the bullet at
-          firingTimer = game.time.now + 800; //how fast the bullet fires. the lower the more fast
+          game.physics.arcade.moveToObject(meteor,player,350); //how fast the bullet flies and who to aim the bullet at
+          firingTimer = game.time.now + 800; //how frequent the bullet fires. the lower the more
         }
 
         function enemyFires () {
@@ -220,8 +229,8 @@ var GameState = {
               var random = game.rnd.integerInRange(0,livingEnemies.length-1);
               var shooter=livingEnemies[random]; // randomly select one of the enemyships
               enemyBullet.reset(shooter.body.x, shooter.body.y); // and fire the bullet from this enemy
-              game.physics.arcade.moveToObject(enemyBullet,player,220); //how fast the bullet flies and who to aim the bullet at
-              firingTimer = game.time.now + 50; //how frequent the bullet fires. the lower the more frequent
+              game.physics.arcade.moveToObject(enemyBullet,player,350); //how fast the bullet flies and who to aim the bullet at
+              firingTimer = game.time.now + 2; //how frequent the bullet fires. the lower the more frequent
           }
         }
 
@@ -296,7 +305,6 @@ var GameState = {
             })
           }
 
-
           //  A new level starts
           function restart () {
               lives.callAll('revive'); //resets the life count
@@ -309,9 +317,9 @@ var GameState = {
           }
 
           function createAliens () {
-          for (var y = 0; y < 7; y++){ //how many rows of enemies
-                for (var x = 0; x < 8; x++){ //how many enemies per row
-                    var alien = aliens.create(x * 98, y * 35, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
+          for (var y = 0; y < 6; y++){ //how many rows of enemies
+                for (var x = 0; x < 9; x++){ //how many enemies per row
+                    var alien = aliens.create(x * 98, y * 45, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
                     alien.anchor.setTo(0.5, 0.5); //set anchor
                     alien.scale.setTo(0.5,-0.5); //reverse image vertically
                     alien.animations.add('fly', [], true); //set animation on ememyships
@@ -351,7 +359,7 @@ var GameState = {
               meteors.callAll('kill');
               enemyBullets.callAll('kill');
               player.kill();
-              stateText.text = "YOU WON!\n Click to continue";
+              stateText.text = "Nice!\n Click to continue";
               stateText.visible = true;  //show above text
               game.input.onTap.addOnce(continuee, this); // the "click to restart" handler
           }
@@ -368,9 +376,10 @@ var GameState = {
           }
 
           function createAliens () {
-          for (var y = 0; y < 7; y++){ //how many rows of enemies
-                for (var x = 0; x < 8; x++){ //how many enemies per row
-                    var alien = aliens.create(x * 98, y * 35, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
+          var randomNumber = Math.floor(Math.random()*enemyships.length);
+          for (var y = 0; y < 6; y++){ //how many rows of enemies
+                for (var x = 0; x < 9; x++){ //how many enemies per row
+                    var alien = aliens.create(x * 98, y * 45, enemyships[randomNumber]); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
                     alien.anchor.setTo(0.5, 0.5); //set anchor
                     alien.scale.setTo(0.5,-0.5); //reverse image vertically
                     alien.animations.add('fly', [], true); //set animation on ememyships
@@ -409,9 +418,26 @@ var GameState = {
           if (lives.countLiving() < 1){
               player.kill();
               enemyBullets.callAll('kill');
-              stateText.text=" GAME OVER \n Click to restart";
+              stateText.text=" Game over \n Click to restart";
               stateText.visible = true;
               game.input.onTap.addOnce(restart,this); //the "click to restart" handler
+              saveGameStats();
+          }
+
+          function saveGameStats () {
+            $.ajax({
+              url: 'http://localhost:3000/api',
+              method: 'POST',
+              data: {
+                name: name,
+                score: score,
+              },
+              datatype: 'JSON',
+              success: function(data){  //if successful upon grabbing data
+                console.log(data);
+
+              }
+            })
           }
 
           //  A new level starts
@@ -426,9 +452,9 @@ var GameState = {
           }
 
           function createAliens () {
-          for (var y = 0; y < 7; y++){ //how many rows of enemies
-                for (var x = 0; x < 8; x++){ //how many enemies per row
-                    var alien = aliens.create(x * 98, y * 35, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
+          for (var y = 0; y < 6; y++){ //how many rows of enemies
+                for (var x = 0; x < 9; x++){ //how many enemies per row
+                    var alien = aliens.create(x * 98, y * 45, 'enemy'); //FIND THE ENEMY IMAGE. how close the enemies are placed next to each other
                     alien.anchor.setTo(0.5, 0.5); //set anchor
                     alien.scale.setTo(0.5,-0.5); //reverse image vertically
                     alien.animations.add('fly', [], true); //set animation on ememyships
