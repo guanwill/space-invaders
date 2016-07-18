@@ -20,6 +20,9 @@ var livingEnemies = [];
 var livingBoss = [];
 var boss;
 var meteor;
+var bulletSpeed = 300;
+var meteorSpeed = 350;
+
 
 var stateText;
 var score = 0;
@@ -214,7 +217,7 @@ var GameState = {
         function meteorFires () {
           meteor = meteors.getFirstExists(false); //  Grab the first meteor we can from the pool
           meteor.reset(50, 50); // for meteoring purposes
-          game.physics.arcade.moveToObject(meteor,player,350); //how fast the bullet flies and who to aim the bullet at
+          game.physics.arcade.moveToObject(meteor,player,meteorSpeed); //how fast the bullet flies and who to aim the bullet at
           firingTimer = game.time.now + 800; //how frequent the bullet fires. the lower the more
         }
 
@@ -229,7 +232,7 @@ var GameState = {
               var random = game.rnd.integerInRange(0,livingEnemies.length-1);
               var shooter=livingEnemies[random]; // randomly select one of the enemyships
               enemyBullet.reset(shooter.body.x, shooter.body.y); // and fire the bullet from this enemy
-              game.physics.arcade.moveToObject(enemyBullet,player,350); //how fast the bullet flies and who to aim the bullet at
+              game.physics.arcade.moveToObject(enemyBullet,player,bulletSpeed); //how fast the bullet flies and who to aim the bullet at
               firingTimer = game.time.now + 2; //how frequent the bullet fires. the lower the more frequent
           }
         }
@@ -314,6 +317,8 @@ var GameState = {
               stateText.visible = false; //hides the text
               scoreString = 'Score : ';
               score = 0;
+              bulletSpeed = 300;
+              meteorSpeed = 350;
           }
 
           function createAliens () {
@@ -373,6 +378,8 @@ var GameState = {
               stateText.visible = false; //hides the text
               // scoreString = 'Score : ';
               // score = 0;
+              bulletSpeed = bulletSpeed + 50;
+              meteorSpeed = meteorSpeed + 10;
           }
 
           function createAliens () {
@@ -449,6 +456,8 @@ var GameState = {
               stateText.visible = false; //hides the text
               scoreString = 'Score : ';
               score = 0;
+              bulletSpeed = 300;
+              meteorSpeed = 350;
           }
 
           function createAliens () {
