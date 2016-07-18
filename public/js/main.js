@@ -286,7 +286,7 @@ var GameState = {
               player.kill();
               meteors.callAll('kill');
               enemyBullets.callAll('kill');
-              stateText.text=" GAME OVER \n Click to restart";
+              stateText.text=" Game over \n Click to restart";
               stateText.visible = true;
               game.input.onTap.addOnce(restart,this); //the "click to restart" handler
               saveGameStats();
