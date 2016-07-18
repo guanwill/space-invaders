@@ -10,7 +10,7 @@
 * Player has a hidden weapon up its sleeve
 * For each winning round, difficulty increases where meteors and enemy bullets are fired faster
 * For each winning round, a randomly generated set of enemies will appear.
-* There are 8 enemies to be seen. Can you find them all?
+* There are 8 different types of enemies to be seen. Can you find them all?
 * Difficulty and score will be resetted when you lose all three lives.
 
 ##Tech Stack
@@ -20,6 +20,9 @@
 * jQuery
 * Node JS
 * Express JS
+* MongoDB/Mongoose
+* AJAX
+* APIs
 
 ##Future Considerations
 * Add Boss Level
