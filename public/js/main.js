@@ -58,6 +58,7 @@ var GameState = {
     game.load.image('enemy8', 'assets/images/enemyship16.png');
     game.load.image('missile', 'assets/images/missilebullet.gif');
     game.load.image('rank', 'assets/images/rank.png');
+    game.load.image('help', 'assets/images/help2.png');
   },
 
   // ------ CREATING GAME STATES -----
@@ -70,6 +71,11 @@ var GameState = {
     button = game.add.button(20, 85, 'rank', function() {
       window.open("http://www.google.com");
     })
+    helpbutton = game.add.button(27.5, 155, 'help', function() {
+      window.open("https://github.com/guanwill/space-invaders");
+    })
+
+    helpbutton.scale.setTo(0.7,0.7);
 
     // creating bullets
     bullets = game.add.group();
@@ -322,10 +328,10 @@ var GameState = {
               player.kill();
               meteors.callAll('kill');
               enemyBullets.callAll('kill');
-              stateText.text= "Gameover!\n Hit enter to restart";
+              stateText.text= "     Gameover!\n Your score is "+ score + "!\n Hit enter to restart";
               stateText.visible = true;
               console.log('boo')
-              continuegame.onDown.addOnce(restart, this);
+              continuegame.onDown.addOnce(restart, this); //addOnce is used instead of add so that this function only applies the one time when we click on 'this'.
               console.log('continue game')
               saveGameStats();
           }
@@ -402,7 +408,7 @@ var GameState = {
               meteors.callAll('kill');
               enemyBullets.callAll('kill');
               player.kill();
-              stateText.text = "Nice!\n Hit Enter to continue";
+              stateText.text= "       Nice!\n Your score is "+ score + "!\n Hit enter to continue";
               stateText.visible = true;  //show above text
               continuegame.onDown.addOnce(continuee, this);
               console.log('continue game')
@@ -464,9 +470,9 @@ var GameState = {
           if (lives.countLiving() < 1){
               player.kill();
               enemyBullets.callAll('kill');
-              stateText.text="Gameover!\n Hit enter to restart";
+              stateText.text= "     Gameover!\n Your score is "+ score + "!\n Hit enter to restart";
               stateText.visible = true;
-              continuegame.onDown.addOnce(restart, this);
+              continuegame.onDown.addOnce(restart, this); //addOnce is used instead of add so that this function only applies the one time when we click on 'this'.
               console.log('continue game')
               saveGameStats();
           }

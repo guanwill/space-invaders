@@ -3,15 +3,16 @@
 ##How to Play
 * Shoot all the bad guys down with your awesome ship but make sure you avoid your opponent's bullets & meteors!
 * Press Space Bar to shoot
-* When the game has finished, left click your mouse to restart or continue.
+* When the game has finished, hit the 'Enter' key on your mouse to restart or continue.
 * Compete for the highest score!
+* Each enemy killed gives you 20 points. You will be rewarded bonus 1000 points per stage cleared.
 
 ##Features
 * Player has two hidden weapons packed away in its aircraft
 * For each winning round, difficulty increases where meteors and enemy bullets are fired faster
 * For each winning round, a randomly generated set of enemies will appear.
 * There are 8 different types of enemies to be seen. Can you find them all?
-* Difficulty and score will be resetted when you lose all three lives.
+* Difficulty and score will be reset when you lose all three lives.
 
 ##Tech Stack
 * Tried out Phaser.js
