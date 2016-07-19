@@ -4,7 +4,7 @@
 
 // ----- CREATING NEW GAME INSTANCE -----
 var game = new Phaser.Game(1550, 860, Phaser.AUTO, 'game-area'); //set resolution. phaser.auto will choose to render on canvas or webGL depending on availability.
-console.log("hold key '1' for a better attack");
+console.log("hold key '1' or '2' instead of 'space' for a better attack");
 
 var player;
 var aliens;
@@ -22,6 +22,7 @@ var boss;
 var meteor;
 var bulletSpeed = 300;
 var meteorSpeed = 350;
+var continuegame;
 
 
 var stateText;
@@ -56,6 +57,7 @@ var GameState = {
     game.load.image('enemy7', 'assets/images/enemyship14.png');
     game.load.image('enemy8', 'assets/images/enemyship16.png');
     game.load.image('missile', 'assets/images/missilebullet.gif');
+    game.load.image('rank', 'assets/images/rank.png');
   },
 
   // ------ CREATING GAME STATES -----
@@ -64,6 +66,10 @@ var GameState = {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     starfield = game.add.tileSprite(0, 0, 1530, 860, 'starfield'); //to load the background image into the main game, you have to create a new sprite for each image. this.game always refer to the MAIN GAME object. sprite() takes x, y coordinates and key of image object you want to place the image as arguments
     game.world.setBounds(-55, 20, 1590, 880);
+
+    button = game.add.button(20, 85, 'rank', function() {
+      window.open("http://www.google.com");
+    })
 
     // creating bullets
     bullets = game.add.group();
@@ -168,6 +174,7 @@ var GameState = {
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR); //make spacebar the fire bullet button
     firebluebullet = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
     firemissile = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+    continuegame = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
 
     //  The score
@@ -179,7 +186,7 @@ var GameState = {
     game.add.text(game.world.width - 200, 50, 'Lives : ', { font: '24px Arial', fill: 'white' });
 
     //  Text
-    stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '34px Press Start 2P', fill: 'yellow' });
+    stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '24px Press Start 2P', fill: 'yellow' });
     stateText.anchor.setTo(0.5, 0.5);
     stateText.visible = false;
 
@@ -315,9 +322,11 @@ var GameState = {
               player.kill();
               meteors.callAll('kill');
               enemyBullets.callAll('kill');
-              stateText.text=" Game over \n Click to restart";
+              stateText.text= "Gameover!\n Hit enter to restart";
               stateText.visible = true;
-              game.input.onTap.addOnce(restart,this); //the "click to restart" handler
+              console.log('boo')
+              continuegame.onDown.addOnce(restart, this);
+              console.log('continue game')
               saveGameStats();
           }
 
@@ -393,9 +402,10 @@ var GameState = {
               meteors.callAll('kill');
               enemyBullets.callAll('kill');
               player.kill();
-              stateText.text = "Nice!\n Click to continue";
+              stateText.text = "Nice!\n Hit Enter to continue";
               stateText.visible = true;  //show above text
-              game.input.onTap.addOnce(continuee, this); // the "click to restart" handler
+              continuegame.onDown.addOnce(continuee, this);
+              console.log('continue game')
           }
 
           // -----RESTART GAME AFTER KILLING ALL MINIONS-----
@@ -454,9 +464,10 @@ var GameState = {
           if (lives.countLiving() < 1){
               player.kill();
               enemyBullets.callAll('kill');
-              stateText.text=" Game over \n Click to restart";
+              stateText.text="Gameover!\n Hit enter to restart";
               stateText.visible = true;
-              game.input.onTap.addOnce(restart,this); //the "click to restart" handler
+              continuegame.onDown.addOnce(restart, this);
+              console.log('continue game')
               saveGameStats();
           }
 
