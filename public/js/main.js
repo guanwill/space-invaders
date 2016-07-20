@@ -178,8 +178,8 @@ var GameState = {
     // create controls
     cursors = game.input.keyboard.createCursorKeys();
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR); //make spacebar the fire bullet button
-    firebluebullet = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
-    firemissile = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+    firebluebullet = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+    firemissile = game.input.keyboard.addKey(Phaser.Keyboard.W);
     continuegame = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
 
@@ -423,8 +423,8 @@ var GameState = {
               stateText.visible = false; //hides the text
               // scoreString = 'Score : ';
               // score = 0;
-              bulletSpeed = bulletSpeed + 50;
-              meteorSpeed = meteorSpeed + 10;
+              bulletSpeed = bulletSpeed + 55;
+              meteorSpeed = meteorSpeed + 20;
           }
 
           function createAliens () {
