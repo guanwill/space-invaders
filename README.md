@@ -2,9 +2,9 @@
 
 ##How to Play
 * Shoot all the bad guys down with your awesome ship but make sure you avoid your opponent's bullets & meteors!
-* Press Space Bar to shoot
-* When the game has finished, hit the 'Enter' key on your mouse to restart or continue.
-* Press ESC to pause the game
+* Spacebar = Shoot
+* Enter = Continue/Restart
+* ESC = Pause/Unpause
 * Compete for the highest score!
 * Each enemy killed gives you 20 points. You will be rewarded bonus 1000 points per stage cleared.
 
