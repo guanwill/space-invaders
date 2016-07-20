@@ -35,7 +35,7 @@ var name = prompt("Please Enter Your Name");
 var meteorattacks = ['meteor', 'meteor2', 'meteor3', 'meteor4', 'meteor5', 'meteor6']
 var randomMeteorAttack = Math.floor(Math.random()*meteorattacks.length);
 var enemyships = ['enemy2', 'enemy3', 'enemy4', 'enemy5', 'enemy6', 'enemy7', 'enemy8'];
-var enemyattacks = ['enemyBullet', 'greenball', 'redball', 'purpleball', 'yellowball', 'yellowball2', 'spikyball'];
+var enemyattacks = ['enemyBullet', 'greenball', 'redball', 'purpleball', 'yellowball', 'spikyball', 'wormholeBullet', 'bullet2'];
 var randomEnemyAttack = Math.floor(Math.random()*enemyattacks.length);
 
 // ------ PRELOADING ASSETS -----
@@ -68,9 +68,10 @@ var GameState = {
     game.load.image('greenball', '/assets/images/greenball.png');
     game.load.image('redball', '/assets/images/redball.png');
     game.load.image('purpleball', '/assets/images/purpleball.png');
-    game.load.image('yellowball', '/assets/images/yellowball.png');
-    game.load.image('yellowball2', '/assets/images/yellowball2.png');
+    game.load.image('yellowball', '/assets/images/yellowball2.png');
+    game.load.image('wormholeBullet', '/assets/images/wormhole2.png');
     game.load.image('spikyball', '/assets/images/spikyball.png');
+    game.load.image('bullet2', '/assets/images/bullet2.png');
 
     game.load.image('meteor', 'assets/images/bossBullet.png');
     game.load.image('meteor2', 'assets/images/meteor1.png');
@@ -89,7 +90,7 @@ var GameState = {
     game.world.setBounds(-55, 20, 1590, 880);
 
     button = game.add.button(20, 85, 'rank', function() {
-      window.open("http://www.google.com");
+      window.open("http://localhost:1337/");
     })
     helpbutton = game.add.button(27.5, 155, 'help', function() {
       window.open("https://github.com/guanwill/space-invaders");
@@ -451,7 +452,7 @@ var GameState = {
               // scoreString = 'Score : ';
               // score = 0;
               enemyBullets.removeAll();
-              var enemyattacks = ['enemyBullet', 'greenball', 'redball', 'purpleball', 'yellowball', 'yellowball2', 'spikyball'];
+              var enemyattacks = ['enemyBullet', 'greenball', 'redball', 'purpleball', 'yellowball', 'spikyball', 'wormholeBullet', 'bullet2'];
               var randomEnemyAttack = Math.floor(Math.random()*enemyattacks.length);
               enemyBullets.createMultiple(90, enemyattacks[randomEnemyAttack]); //FIND THE ENEMY BULLET IMAGE
 
@@ -460,8 +461,7 @@ var GameState = {
               var randomMeteorAttack = Math.floor(Math.random()*meteorattacks.length);
               meteors.createMultiple(90, meteorattacks[randomMeteorAttack]); //FIND THE METEOR IMAGE
 
-
-              bulletSpeed = bulletSpeed + 55;
+              bulletSpeed = bulletSpeed + 50;
               meteorSpeed = meteorSpeed + 20;
           }
 

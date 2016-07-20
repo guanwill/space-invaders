@@ -15,15 +15,16 @@
 * Difficulty and score will be reset when you lose all three lives.
 
 ##Tech Stack
-* Tried out Phaser.js
+* Phaser.js (HTML5 Game framework)
 * HTML5/CSS3
 * Javascript
 * jQuery
 * Node JS
 * Express JS
-* MongoDB/Mongoose
+* MongoDB/Mongoose (Store player's name and score)
 * AJAX
 * APIs
+* Angular JS (Leaderboard)
 
 ##Future Considerations
 * Add Boss Level
@@ -31,5 +32,6 @@
 * Different ships for the player to choose from
 * Implement socket.io for multiplayer
 
-##Heroku
-https://arcane-river-66749.herokuapp.com/
+##Links
+Demo: https://arcane-river-66749.herokuapp.com/
+Leaderboard Github: https://github.com/guanwill/space-invaders-leaderboard
