@@ -32,7 +32,8 @@ var scoreText;
 var lives;
 var name = prompt("Please Enter Your Name");
 var enemyships = ['enemy2', 'enemy3', 'enemy4', 'enemy5', 'enemy6', 'enemy7', 'enemy8'];
-
+var enemyattacks = ['enemyBullet', 'greenball', 'redball', 'purpleball', 'yellowball', 'yellowball2', 'spikyball'];
+var randomEnemyAttack = Math.floor(Math.random()*enemyattacks.length);
 
 // ------ PRELOADING ASSETS -----
 var GameState = {
@@ -42,12 +43,12 @@ var GameState = {
     game.load.image('kaboom', 'assets/images/explosion.gif-c200');
     game.load.image('bullet', 'assets/images/blueball.png');
     game.load.image('bluebullet', 'assets/images/laser-multiple3.png');
-    game.load.image('enemyBullet', 'assets/images/enemyball.gif');
+    game.load.image('missile', 'assets/images/missilebullet.gif');
     game.load.image('player', 'assets/images/plane3.png');
     game.load.image('wormhole', 'assets/images/wormhole.gif');
     game.load.image('hpbar', 'assets/images/enemyship.gif');
     game.load.image('boss', 'assets/images/boss2.png');
-    game.load.image('meteor', 'assets/images/bossBullet.png');
+
     game.load.image('enemy', 'assets/images/enemyship2.png');
     game.load.image('enemy2', 'assets/images/enemyship5.png');
     game.load.image('enemy3', 'assets/images/enemyship8.png');
@@ -56,9 +57,24 @@ var GameState = {
     game.load.image('enemy6', 'assets/images/enemyship11.png');
     game.load.image('enemy7', 'assets/images/enemyship14.png');
     game.load.image('enemy8', 'assets/images/enemyship16.png');
-    game.load.image('missile', 'assets/images/missilebullet.gif');
+
     game.load.image('rank', 'assets/images/rank.png');
     game.load.image('help', 'assets/images/help2.png');
+
+    game.load.image('enemyBullet', 'assets/images/enemyball.gif');
+    game.load.image('greenball', '/assets/images/greenball.png');
+    game.load.image('redball', '/assets/images/redball.png');
+    game.load.image('purpleball', '/assets/images/purpleball.png');
+    game.load.image('yellowball', '/assets/images/yellowball.png');
+    game.load.image('yellowball2', '/assets/images/yellowball2.png');
+    game.load.image('spikyball', '/assets/images/spikyball.png');
+
+    game.load.image('meteor', 'assets/images/bossBullet.png');
+    game.load.image('meteor2', 'assets/images/meteor1.png');
+    game.load.image('meteor3', 'assets/images/meteor2.png');
+    game.load.image('meteor4', 'assets/images/meteor3.png');
+    game.load.image('meteor5', 'assets/images/meteor4.png');
+
   },
 
   // ------ CREATING GAME STATES -----
@@ -359,6 +375,8 @@ var GameState = {
               createAliens(); // And brings the aliens back from the dead
               player.revive(); //revives the player
               stateText.visible = false; //hides the text
+              enemyBullets.removeAll();
+              enemyBullets.createMultiple(90, 'enemyBullet'); //FIND THE ENEMY BULLET IMAGE
               scoreString = 'Score : ';
               score = 0;
               bulletSpeed = 300;
@@ -423,6 +441,10 @@ var GameState = {
               stateText.visible = false; //hides the text
               // scoreString = 'Score : ';
               // score = 0;
+              enemyBullets.removeAll();
+              var enemyattacks = ['enemyBullet', 'greenball', 'redball', 'purpleball', 'yellowball', 'yellowball2', 'spikyball'];
+              var randomEnemyAttack = Math.floor(Math.random()*enemyattacks.length);
+              enemyBullets.createMultiple(90, enemyattacks[randomEnemyAttack]); //FIND THE ENEMY BULLET IMAGE
               bulletSpeed = bulletSpeed + 55;
               meteorSpeed = meteorSpeed + 20;
           }
@@ -500,6 +522,8 @@ var GameState = {
               createAliens(); // And brings the aliens back from the dead
               player.revive(); //revives the player
               stateText.visible = false; //hides the text
+              enemyBullets.removeAll();
+              enemyBullets.createMultiple(90, 'enemyBullet'); //FIND THE ENEMY BULLET IMAGE
               scoreString = 'Score : ';
               score = 0;
               bulletSpeed = 300;
