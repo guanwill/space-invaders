@@ -24,7 +24,6 @@ var bulletSpeed = 300;
 var meteorSpeed = 350;
 var continuegame;
 
-
 var stateText;
 var score = 0;
 var scoreString = '';
@@ -63,6 +62,8 @@ var GameState = {
 
     game.load.image('rank', 'assets/images/rank.png');
     game.load.image('help', 'assets/images/help2.png');
+    game.load.image('playpause', 'assets/images/playpause.png');
+
 
     game.load.image('enemyBullet', 'assets/images/enemyball.gif');
     game.load.image('greenball', '/assets/images/greenball.png');
@@ -95,6 +96,19 @@ var GameState = {
     helpbutton = game.add.button(27.5, 155, 'help', function() {
       window.open("https://github.com/guanwill/space-invaders");
     })
+
+    // Creating Pause function on ESC key
+    window.onkeydown = function(event) { //27 is keycode for ESC
+      if (event.keyCode == 27){
+        if (game.paused = !game.paused) {
+          stateText.text = "Paused";
+          stateText.visible = true;
+        }
+        else {
+          stateText.visible = false;
+        }
+      }
+    }
 
     helpbutton.scale.setTo(0.7,0.7);
 
@@ -202,7 +216,6 @@ var GameState = {
     firebluebullet = game.input.keyboard.addKey(Phaser.Keyboard.Q);
     firemissile = game.input.keyboard.addKey(Phaser.Keyboard.W);
     continuegame = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-
 
     //  The score
     scoreString = 'Score : ';
