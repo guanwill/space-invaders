@@ -31,6 +31,9 @@ var scoreString = '';
 var scoreText;
 var lives;
 var name = prompt("Please Enter Your Name");
+
+var meteorattacks = ['meteor', 'meteor2', 'meteor3', 'meteor4', 'meteor5', 'meteor6']
+var randomMeteorAttack = Math.floor(Math.random()*meteorattacks.length);
 var enemyships = ['enemy2', 'enemy3', 'enemy4', 'enemy5', 'enemy6', 'enemy7', 'enemy8'];
 var enemyattacks = ['enemyBullet', 'greenball', 'redball', 'purpleball', 'yellowball', 'yellowball2', 'spikyball'];
 var randomEnemyAttack = Math.floor(Math.random()*enemyattacks.length);
@@ -74,6 +77,7 @@ var GameState = {
     game.load.image('meteor3', 'assets/images/meteor2.png');
     game.load.image('meteor4', 'assets/images/meteor3.png');
     game.load.image('meteor5', 'assets/images/meteor4.png');
+    game.load.image('meteor6', 'assets/images/nokia3.png');
 
   },
 
@@ -344,7 +348,7 @@ var GameState = {
               player.kill();
               meteors.callAll('kill');
               enemyBullets.callAll('kill');
-              stateText.text= "     Gameover!\n Your score is "+ score + "!\n Hit enter to restart";
+              stateText.text= "     Gameover!\n Your score is "+ score + "!\n Hit enter or A to restart";
               stateText.visible = true;
               console.log('boo')
               continuegame.onDown.addOnce(restart, this); //addOnce is used instead of add so that this function only applies the one time when we click on 'this'.
@@ -375,8 +379,13 @@ var GameState = {
               createAliens(); // And brings the aliens back from the dead
               player.revive(); //revives the player
               stateText.visible = false; //hides the text
+
               enemyBullets.removeAll();
               enemyBullets.createMultiple(90, 'enemyBullet'); //FIND THE ENEMY BULLET IMAGE
+
+              meteors.removeAll();
+              meteors.createMultiple(90, 'meteor');
+
               scoreString = 'Score : ';
               score = 0;
               bulletSpeed = 300;
@@ -426,7 +435,7 @@ var GameState = {
               meteors.callAll('kill');
               enemyBullets.callAll('kill');
               player.kill();
-              stateText.text= "       Nice!\n Your score is "+ score + "!\n Hit enter to continue";
+              stateText.text= "       Nice!\n Your score is "+ score + "!\n Hit enter or A to continue";
               stateText.visible = true;  //show above text
               continuegame.onDown.addOnce(continuee, this);
               console.log('continue game')
@@ -445,6 +454,13 @@ var GameState = {
               var enemyattacks = ['enemyBullet', 'greenball', 'redball', 'purpleball', 'yellowball', 'yellowball2', 'spikyball'];
               var randomEnemyAttack = Math.floor(Math.random()*enemyattacks.length);
               enemyBullets.createMultiple(90, enemyattacks[randomEnemyAttack]); //FIND THE ENEMY BULLET IMAGE
+
+              meteors.removeAll();
+              var meteorattacks = ['meteor', 'meteor2', 'meteor3', 'meteor4', 'meteor5', 'meteor6']
+              var randomMeteorAttack = Math.floor(Math.random()*meteorattacks.length);
+              meteors.createMultiple(90, meteorattacks[randomMeteorAttack]); //FIND THE METEOR IMAGE
+
+
               bulletSpeed = bulletSpeed + 55;
               meteorSpeed = meteorSpeed + 20;
           }
@@ -492,7 +508,7 @@ var GameState = {
           if (lives.countLiving() < 1){
               player.kill();
               enemyBullets.callAll('kill');
-              stateText.text= "     Gameover!\n Your score is "+ score + "!\n Hit enter to restart";
+              stateText.text= "     Gameover!\n Your score is "+ score + "!\n Hit enter or A to restart";
               stateText.visible = true;
               continuegame.onDown.addOnce(restart, this); //addOnce is used instead of add so that this function only applies the one time when we click on 'this'.
               console.log('continue game')
@@ -522,8 +538,13 @@ var GameState = {
               createAliens(); // And brings the aliens back from the dead
               player.revive(); //revives the player
               stateText.visible = false; //hides the text
+
               enemyBullets.removeAll();
               enemyBullets.createMultiple(90, 'enemyBullet'); //FIND THE ENEMY BULLET IMAGE
+
+              meteors.removeAll();
+              meteors.createMultiple(90, 'meteor');
+
               scoreString = 'Score : ';
               score = 0;
               bulletSpeed = 300;
