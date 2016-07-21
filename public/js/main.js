@@ -146,7 +146,7 @@ var GameState = {
     game.load.image('rank', 'assets/images/rank.png');
     game.load.image('help', 'assets/images/help2.png');
     game.load.image('playpause', 'assets/images/playpause.png');
-
+    game.load.image('home', 'assets/images/home.png');
 
     game.load.image('enemyBullet', 'assets/images/enemyball.gif');
     game.load.image('greenball', '/assets/images/greenball.png');
@@ -189,6 +189,16 @@ var GameState = {
     helpbutton = game.add.button(27.5, 155, 'help', function() {
       window.open("https://github.com/guanwill/space-invaders");
     })
+    homebutton = game.add.button(25.5, 218, 'home', function() {
+      window.location.href = "https://arcane-river-66749.herokuapp.com/";
+    })
+
+    // homebutton = game.add.button(25, 151, 'home', function() {
+    //   window.location.href = "https://arcane-river-66749.herokuapp.com/";
+    // })
+    // helpbutton = game.add.button(27, 218, 'help', function() {
+    //   window.open("https://github.com/guanwill/space-invaders");
+    // })
 
     // Creating Pause function on ESC key
     window.onkeydown = function(event) { //27 is keycode for ESC

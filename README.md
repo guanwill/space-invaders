@@ -14,6 +14,7 @@
 * For each winning round, a randomly generated set of enemies will appear.
 * There are 8 different types of enemies to be seen. Can you find them all?
 * Difficulty and score will be reset when you lose all three lives.
+* Beautiful logo designed by [Chris](https://github.com/ctrlaltchris)
 
 ##Tech Stack
 * Phaser.js (HTML5 Game framework)
@@ -34,5 +35,6 @@
 * Implement socket.io for multiplayer
 
 ##Links
-* Demo: Coming soon
+* Demo: https://arcane-river-66749.herokuapp.com/
+* Leaderboard GH-Pages: https://guanwill.github.io/space-invaders-leaderboard/
 * Leaderboard Github: https://github.com/guanwill/space-invaders-leaderboard
