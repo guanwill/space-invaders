@@ -43,7 +43,7 @@ var gameTitle = {
     game.load.image('mainscreen', 'assets/images/Starfortinvaders.jpg'); //this loads images. first arg is key name, second arg is path to image
     game.load.image('STI', 'assets/images/starfortlogo.png'); //this loads images. first arg is key name, second arg is path to image
     game.load.image('xboxa', 'assets/images/XBOXA.png'); //this loads images. first arg is key name, second arg is path to image
-    game.load.audio('playgamemusic', 'assets/audio/SF.mp3');
+    game.load.audio('playgamemusic', 'assets/audio/sf.mp3');
   },
 
   create: function() {
