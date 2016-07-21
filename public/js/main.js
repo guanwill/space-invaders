@@ -4,7 +4,7 @@
 
 // ----- CREATING NEW GAME INSTANCE -----
 var game = new Phaser.Game(1550, 860, Phaser.AUTO, 'game-area'); //set resolution. phaser.auto will choose to render on canvas or webGL depending on availability.
-console.log("hold key '1' or '2' instead of 'space' for a better attack");
+console.log("hold key 'q' or 'w' instead of 'space' for a better attack");
 
 var player;
 var aliens;
@@ -36,6 +36,42 @@ var randomMeteorAttack = Math.floor(Math.random()*meteorattacks.length);
 var enemyships = ['enemy2', 'enemy3', 'enemy4', 'enemy5', 'enemy6', 'enemy7', 'enemy8'];
 var enemyattacks = ['enemyBullet', 'greenball', 'redball', 'purpleball', 'yellowball', 'spikyball', 'wormholeBullet', 'bullet2'];
 var randomEnemyAttack = Math.floor(Math.random()*enemyattacks.length);
+
+var gameTitle = {
+  preload: function() {
+    game.load.image('rank', 'assets/images/rank.png');
+
+    game.load.image('starfield', 'assets/images/space.jpg'); //this loads images. first arg is key name, second arg is path to image
+  },
+
+  create: function() {
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    starfield = game.add.tileSprite(0, 0, 1530, 860, 'starfield'); //to load the background image into the main game, you have to create a new sprite for each image. this.game always refer to the MAIN GAME object. sprite() takes x, y coordinates and key of image object you want to place the image as arguments
+    continuegame = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+
+    stateText = game.add.text(game.world.centerX,game.world.centerY-100,' ', { font: '84px Helvetica ', fill: 'yellow' });
+    stateText.anchor.setTo(0.5, 0.5);
+    stateText.text= "STARFORT INVADERS";
+    stateText.visible = true;
+
+    stateText2 = game.add.text(game.world.centerX,game.world.centerY+100,' ', { font: '30px Helvetica', fill: 'yellow' });
+    stateText2.anchor.setTo(0.5, 0.5);
+    stateText2.text= " Space           :      Shoot \n Arrow Keys   :      Move \n Enter             :      Restart/Continue \n ESC              :      Pause/Unpause";
+    stateText2.visible = true;
+  },
+
+  update: function() {
+    starfield.tilePosition.y += 2; //this scrolls ur background horizontally
+    // stateText.text= "WELCOME";
+    // stateText.visible = true;
+    continuegame.onDown.addOnce(playy, this);
+
+    function playy() {
+      this.game.state.start("GameState");
+    }
+  }
+};
+
 
 // ------ PRELOADING ASSETS -----
 var GameState = {
@@ -81,6 +117,11 @@ var GameState = {
     game.load.image('meteor5', 'assets/images/meteor4.png');
     game.load.image('meteor6', 'assets/images/nokia3.png');
 
+    game.load.audio('kiblastsound', 'assets/audio/kiblast2.mp3');
+    game.load.audio('lasersound', 'assets/audio/lasercut.mp3');
+    game.load.audio('missilesound', 'assets/audio/missile2.mp3');
+    game.load.audio('explosionsound', 'assets/audio/explosion3.mp3');
+    game.load.audio('backgroundmusic', 'assets/audio/sf.mp3');
   },
 
   // ------ CREATING GAME STATES -----
@@ -111,6 +152,24 @@ var GameState = {
     }
 
     helpbutton.scale.setTo(0.7,0.7);
+
+    //add bg music
+    backgroundmusic = game.add.audio('backgroundmusic', 1, true)
+    backgroundmusic.play();
+
+    //add sound effects
+    kiblastsound = game.add.audio('kiblastsound');
+    lasersound = game.add.audio('lasersound');
+    missilesound = game.add.audio('missilesound');
+    explosionsound = game.add.audio('explosionsound');
+    kiblastsound.allowMultiple = true; //lets sound overlap each other. won't cancel sound when new sound is played
+    lasersound.allowMultiple = true;
+    missilesound.allowMultiple = true;
+    explosionsound.allowMultiple = true;
+    kiblastsound.volume=0.6; //setting volume of sound
+    lasersound.volume=0.3;
+    missilesound.volume=0.3;
+    explosionsound.volume=0.6;
 
     // creating bullets
     bullets = game.add.group();
@@ -219,7 +278,7 @@ var GameState = {
 
     //  The score
     scoreString = 'Score : ';
-    scoreText = game.add.text(10, 50, scoreString + score, { font: '24px Arial 2P', fill: 'white' });
+    scoreText = game.add.text(10, 50, scoreString + score, { font: '24px Arial', fill: 'white' });
 
     //  Lives
     lives = game.add.group();
@@ -307,7 +366,8 @@ var GameState = {
                 if (bullet){
                   bullet.reset(player.x, player.y + -43); //and fire it.
                   bullet.body.velocity.y = -400;
-                  bulletTime = game.time.now + 250; //how fast the bullet fires
+                  lasersound.play();
+                  bulletTime = game.time.now + 230; //how fast the bullet fires
                 }
             }
         }
@@ -319,7 +379,8 @@ var GameState = {
                 if (bullet){
                   bullet.reset(player.x, player.y + -43); //and fire it.
                   bullet.body.velocity.y = -400;
-                  bulletTime = game.time.now + 200; //how fast the bullet fires
+                  kiblastsound.play();
+                  bulletTime = game.time.now + 300; //how fast the bullet fires
                 }
             }
         }
@@ -331,6 +392,7 @@ var GameState = {
                 if (bullet){
                   bullet.reset(player.x, player.y + -43); //and fire it.
                   bullet.body.velocity.y = -400;
+                  missilesound.play();
                   bulletTime = game.time.now + 100; //how fast the bullet fires
                 }
             }
@@ -347,6 +409,7 @@ var GameState = {
         function meteorHitsPlayer (player,bullet) {
           bullet.kill();
           live = lives.getFirstAlive();
+          explosionsound.play();
 
           if (live){
             live.kill();
@@ -434,6 +497,7 @@ var GameState = {
           // When a bullet hits an alien we kill them both
           bullet.kill();
           alien.kill();
+          explosionsound.play();
 
           //  Increase the score
           score += 20;
@@ -507,6 +571,7 @@ var GameState = {
         function enemyHitsPlayer (player,bullet) {
           bullet.kill();
           live = lives.getFirstAlive();
+          explosionsound.play();
 
           if (live){
             live.kill();
@@ -593,6 +658,7 @@ var GameState = {
             // When a bullet hits an alien we kill them both
             bullets2.kill();
             alien.kill();
+            explosionsound.play();
 
             //  Create an explosion
             var explosion = explosions.getFirstExists(false);
@@ -618,6 +684,7 @@ var GameState = {
             // When a bullet hits an alien we kill them both
             missile.kill();
             alien.kill();
+            explosionsound.play();
 
             //  Create an explosion
             var explosion = explosions.getFirstExists(false);
@@ -643,6 +710,8 @@ var GameState = {
             // When a bullet hits an alien we kill them both
             bullets2.kill();
             alien.kill();
+            explosionsound.play();
+
             var explosion = explosions.getFirstExists(false);
             explosion.reset(alien.body.x, alien.body.y);
             explosion.play('kaboom', 30, false, true);
@@ -665,4 +734,7 @@ var GameState = {
 
 //initate the phaser framework
 game.state.add('GameState', GameState); //to add the state we created above to the game. first argument 'GameState' is name of object and second argument is the object itself, defined above
-game.state.start('GameState'); //to initiate the game by firing the state up (State is defined above)
+// game.state.start('GameState'); //to initiate the game by firing the state up (State is defined above)
+
+game.state.add('GameTitle', gameTitle);
+this.game.state.start("GameTitle");

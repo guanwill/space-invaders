@@ -34,5 +34,5 @@
 * Implement socket.io for multiplayer
 
 ##Links
-* Demo: https://arcane-river-66749.herokuapp.com/
+* Demo: Coming soon
 * Leaderboard Github: https://github.com/guanwill/space-invaders-leaderboard
