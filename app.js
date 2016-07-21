@@ -25,7 +25,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 //------MONGOOSE-----
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/gamestats')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://will:will@ds041934.mlab.com:41934/heroku_pdg2mr3m')
 
 //-------ROUTES-------
 
