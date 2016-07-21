@@ -132,7 +132,7 @@ var GameState = {
     game.world.setBounds(-55, 20, 1590, 880);
 
     button = game.add.button(20, 85, 'rank', function() {
-      window.open("http://localhost:1337/");
+      window.open("https://guanwill.github.io/space-invaders-leaderboard/");
     })
     helpbutton = game.add.button(27.5, 155, 'help', function() {
       window.open("https://github.com/guanwill/space-invaders");
