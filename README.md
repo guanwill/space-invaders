@@ -17,7 +17,8 @@
 * Beautiful logo designed by [Chris](https://github.com/ctrlaltchris)
 
 ##Tech Stack
-* Phaser.js (HTML5 Game framework)
+* (Phaser.js)[http://phaser.io/] (HTML5 Game framework)
+* (Phaser States Tutorial)[http://www.emanueleferonato.com/2014/08/28/phaser-tutorial-understanding-phaser-states/]
 * HTML5/CSS3
 * Javascript
 * jQuery
