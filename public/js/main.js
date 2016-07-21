@@ -435,7 +435,7 @@ var GameState = {
 
           function saveGameStats () {
             $.ajax({
-              url: 'http://localhost:3000/api',
+              url: 'https://arcane-river-66749.herokuapp.com/api',
               method: 'POST',
               data: {
                 name: name,
@@ -595,7 +595,7 @@ var GameState = {
 
           function saveGameStats () {
             $.ajax({
-              url: 'http://localhost:3000/api',
+              url: 'https://arcane-river-66749.herokuapp.com/api',
               method: 'POST',
               data: {
                 name: name,
