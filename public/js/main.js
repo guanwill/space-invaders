@@ -29,9 +29,9 @@ var score = 0;
 var scoreString = '';
 var scoreText;
 var lives;
-var name = prompt("Please Enter Your Name");
+var name;
 
-var meteorattacks = ['meteor', 'meteor2', 'meteor3', 'meteor4', 'meteor5', 'meteor6']
+var meteorattacks = ['meteor', 'meteor2', 'meteor3', 'meteor4', 'meteor5']
 var randomMeteorAttack = Math.floor(Math.random()*meteorattacks.length);
 var enemyships = ['enemy2', 'enemy3', 'enemy4', 'enemy5', 'enemy6', 'enemy7', 'enemy8'];
 var enemyattacks = ['enemyBullet', 'greenball', 'redball', 'purpleball', 'yellowball', 'spikyball', 'wormholeBullet', 'bullet2'];
@@ -39,25 +39,72 @@ var randomEnemyAttack = Math.floor(Math.random()*enemyattacks.length);
 
 var gameTitle = {
   preload: function() {
-    game.load.image('rank', 'assets/images/rank.png');
-
     game.load.image('starfield', 'assets/images/space.jpg'); //this loads images. first arg is key name, second arg is path to image
+    game.load.image('mainscreen', 'assets/images/Starfortinvaders.jpg'); //this loads images. first arg is key name, second arg is path to image
+    game.load.image('STI', 'assets/images/starfortlogo.png'); //this loads images. first arg is key name, second arg is path to image
+    game.load.image('xboxa', 'assets/images/XBOXA.png'); //this loads images. first arg is key name, second arg is path to image
+    game.load.audio('playgamemusic', 'assets/audio/SF.mp3');
   },
 
   create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
+    playgamemusic = game.add.audio('playgamemusic');
+    playgamemusic.play();
     starfield = game.add.tileSprite(0, 0, 1530, 860, 'starfield'); //to load the background image into the main game, you have to create a new sprite for each image. this.game always refer to the MAIN GAME object. sprite() takes x, y coordinates and key of image object you want to place the image as arguments
+    mainscreen = game.add.image(320,230, 'STI'); //to load the background image into the main game, you have to create a new sprite for each image. this.game always refer to the MAIN GAME object. sprite() takes x, y coordinates and key of image object you want to place the image as arguments
     continuegame = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
-    stateText = game.add.text(game.world.centerX,game.world.centerY-100,' ', { font: '84px Helvetica ', fill: 'yellow' });
+    stateText = game.add.text(game.world.centerX-60,game.world.centerY+157,' ', { font: '25px Helvetica ', fill: 'white' });
     stateText.anchor.setTo(0.5, 0.5);
-    stateText.text= "STARFORT INVADERS";
+    stateText.text= "PRESS ";
     stateText.visible = true;
+    xboxa = game.add.image(game.world.centerX-10, game.world.centerY+120, 'xboxa');
+  },
 
-    stateText2 = game.add.text(game.world.centerX,game.world.centerY+100,' ', { font: '30px Helvetica', fill: 'yellow' });
+  update: function() {
+    starfield.tilePosition.y += 2; //this scrolls ur background horizontally
+    // stateText.text= "WELCOME";
+    // stateText.visible = true;
+    continuegame.onDown.addOnce(playy, this);
+
+    function playy() {
+      this.game.state.start("readysetgo");
+    }
+  }
+};
+
+var readysetgo = {
+  preload: function() {
+    name = prompt("Please Enter Your Name")
+    game.load.image('controller', 'assets/images/controller.png');
+    game.load.image('starfield', 'assets/images/space.jpg'); //this loads images. first arg is key name, second arg is path to image
+    game.load.image('xboxa', 'assets/images/XBOXA.png'); //this loads images. first arg is key name, second arg is path to image
+    // game.load.image('mainscreen', 'assets/images/Starfortinvaders.jpg'); //this loads images. first arg is key name, second arg is path to image
+  },
+
+  create: function() {
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    mainscreen = game.add.image(320,230, 'STI'); //to load the background image into the main game, you have to create a new sprite for each image. this.game always refer to the MAIN GAME object. sprite() takes x, y coordinates and key of image object you want to place the image as arguments
+    starfield = game.add.tileSprite(0, 0, 1530, 860, 'starfield'); //to load the background image into the main game, you have to create a new sprite for each image. this.game always refer to the MAIN GAME object. sprite() takes x, y coordinates and key of image object you want to place the image as arguments
+    continuegame = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+    controller = game.add.image(450, -10, 'controller');
+
+    // stateText = game.add.text(game.world.centerX,game.world.centerY-100,' ', { font: '84px Helvetica ', fill: 'yellow' });
+    // stateText.anchor.setTo(0.5, 0.5);
+    // stateText.text= "ARE YOU READY?";
+    // stateText.visible = true;
+
+    stateText2 = game.add.text(game.world.centerX,game.world.centerY+50,' ', { font: '25px Helvetica', fill: 'yellow' });
     stateText2.anchor.setTo(0.5, 0.5);
-    stateText2.text= " Space           :      Shoot \n Arrow Keys   :      Move \n Enter             :      Restart/Continue \n ESC              :      Pause/Unpause";
+    stateText2.text= "   Shoot          :       Space or RT \n   Move           :       Arrow Keys or Analog Stick \n   Restart        :       Enter or A \n   Continue     :       Enter or A \n   Pause         :       ESC or Start";
     stateText2.visible = true;
+
+    stateText = game.add.text(game.world.centerX-60,game.world.centerY+217,' ', { font: '25px Helvetica ', fill: 'white' });
+    stateText.anchor.setTo(0.5, 0.5);
+    stateText.text= "PRESS ";
+    stateText.visible = true;
+    xboxa = game.add.image(game.world.centerX-10, game.world.centerY+180, 'xboxa');
+
   },
 
   update: function() {
@@ -121,13 +168,18 @@ var GameState = {
     game.load.audio('lasersound', 'assets/audio/lasercut.mp3');
     game.load.audio('missilesound', 'assets/audio/missile2.mp3');
     game.load.audio('explosionsound', 'assets/audio/explosion3.mp3');
-    game.load.audio('backgroundmusic', 'assets/audio/sf.mp3');
+    game.load.audio('backgroundmusic', 'assets/audio/mystic.mp3');
+    game.load.audio('youwin', 'assets/audio/youwin.mp3');
+    game.load.audio('gameover', 'assets/audio/gameover.mp3');
+    game.load.audio('playgamemusic', 'assets/audio/SF.mp3');
+
   },
 
   // ------ CREATING GAME STATES -----
   //after loading images, audio, etc. we create the game state. executes after everything is loaded
   create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
+    playgamemusic.stop();
     starfield = game.add.tileSprite(0, 0, 1530, 860, 'starfield'); //to load the background image into the main game, you have to create a new sprite for each image. this.game always refer to the MAIN GAME object. sprite() takes x, y coordinates and key of image object you want to place the image as arguments
     game.world.setBounds(-55, 20, 1590, 880);
 
@@ -166,10 +218,16 @@ var GameState = {
     lasersound.allowMultiple = true;
     missilesound.allowMultiple = true;
     explosionsound.allowMultiple = true;
-    kiblastsound.volume=0.6; //setting volume of sound
-    lasersound.volume=0.3;
-    missilesound.volume=0.3;
-    explosionsound.volume=0.6;
+    kiblastsound.volume=0.8; //setting volume of sound
+    lasersound.volume=0.4;
+    missilesound.volume=0.4;
+    explosionsound.volume=0.8;
+
+    youwin = game.add.audio('youwin');
+    gameover = game.add.audio('gameover');
+    gameover.volume=2;
+    youwin.volume=2;
+
 
     // creating bullets
     bullets = game.add.group();
@@ -422,6 +480,7 @@ var GameState = {
 
           // When the player dies
           if (lives.countLiving() < 1){
+              gameover.play();
               player.kill();
               meteors.callAll('kill');
               enemyBullets.callAll('kill');
@@ -509,6 +568,7 @@ var GameState = {
           explosion.play('kaboom', 30, false, true);
 
           if (aliens.countLiving() === 0){
+              youwin.play();
               score += 1000;
               meteors.callAll('kill');
               enemyBullets.callAll('kill');
@@ -534,7 +594,7 @@ var GameState = {
               enemyBullets.createMultiple(90, enemyattacks[randomEnemyAttack]); //FIND THE ENEMY BULLET IMAGE
 
               meteors.removeAll();
-              var meteorattacks = ['meteor', 'meteor2', 'meteor3', 'meteor4', 'meteor5', 'meteor6']
+              var meteorattacks = ['meteor', 'meteor2', 'meteor3', 'meteor4', 'meteor5']
               var randomMeteorAttack = Math.floor(Math.random()*meteorattacks.length);
               meteors.createMultiple(90, meteorattacks[randomMeteorAttack]); //FIND THE METEOR IMAGE
 
@@ -584,6 +644,7 @@ var GameState = {
 
           // When the player dies
           if (lives.countLiving() < 1){
+              gameover.play();
               player.kill();
               enemyBullets.callAll('kill');
               stateText.text= "     Gameover!\n Your score is "+ score + "!\n Hit enter or A to restart";
@@ -738,3 +799,4 @@ game.state.add('GameState', GameState); //to add the state we created above to t
 
 game.state.add('GameTitle', gameTitle);
 this.game.state.start("GameTitle");
+game.state.add('readysetgo', readysetgo);
