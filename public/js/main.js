@@ -31,7 +31,7 @@ var scoreText;
 var lives;
 var name;
 
-var meteorattacks = ['meteor', 'meteor2', 'meteor3', 'meteor4', 'meteor5']
+var meteorattacks = ['meteor', 'meteor2', 'meteor3', 'meteor4', 'meteor5', 'meteor6']
 var randomMeteorAttack = Math.floor(Math.random()*meteorattacks.length);
 var enemyships = ['enemy2', 'enemy3', 'enemy4', 'enemy5', 'enemy6', 'enemy7', 'enemy8'];
 var enemyattacks = ['enemyBullet', 'greenball', 'redball', 'purpleball', 'yellowball', 'spikyball', 'wormholeBullet', 'bullet2'];
@@ -604,12 +604,12 @@ var GameState = {
               enemyBullets.createMultiple(90, enemyattacks[randomEnemyAttack]); //FIND THE ENEMY BULLET IMAGE
 
               meteors.removeAll();
-              var meteorattacks = ['meteor', 'meteor2', 'meteor3', 'meteor4', 'meteor5']
+              var meteorattacks = ['meteor', 'meteor2', 'meteor3', 'meteor4', 'meteor5', 'meteor6']
               var randomMeteorAttack = Math.floor(Math.random()*meteorattacks.length);
               meteors.createMultiple(90, meteorattacks[randomMeteorAttack]); //FIND THE METEOR IMAGE
 
-              bulletSpeed = bulletSpeed + 50;
-              meteorSpeed = meteorSpeed + 20;
+              bulletSpeed = bulletSpeed + 120;
+              meteorSpeed = meteorSpeed + 30;
           }
 
           function createAliens () {
